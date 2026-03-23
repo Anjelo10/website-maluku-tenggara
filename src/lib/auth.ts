@@ -18,6 +18,7 @@ export const auth = betterAuth({
       },
     },
   },
+  trustedOrigins: ["https://website-maluku-tenggara.vercel.app/"],
 });
 
 export type Session = typeof auth.$Infer.Session;
