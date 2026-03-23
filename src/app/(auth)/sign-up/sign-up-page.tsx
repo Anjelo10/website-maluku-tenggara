@@ -25,10 +25,11 @@ import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { LoadingButton } from "@/components/LoadingButton";
 
 const signupSchema = z.object({
-  name: z.string(),
-  email: z.email({ message: "Email tidak valid" }),
+  name: z.string().min(1, { error: "Kolom nama tidak boleh kosong" }),
+  email: z.email({ error: "Email tidak valid" }),
   password: z.string().min(8, { error: "Password minimal 8 karakter" }),
 });
 type SignUpValues = z.infer<typeof signupSchema>;
@@ -66,16 +67,17 @@ const SingUpPageView = () => {
     }
   }
 
+  const loading = form.formState.isSubmitting;
+
   return (
-    <section className="w-screen h-screen">
+    <section className="w-screen h-screen bg-gray-200">
       <div className="flex items-center justify-center w-full h-full ">
-        <Card className="bg-gray-300 w-1/4">
+        <Card className="bg-gray-200 w-1/4">
           <CardHeader>
             <CardTitle>SignUp Acount</CardTitle>
-            <CardDescription>Enter Your Email and Password</CardDescription>
-            <CardAction>
-              <Link href={"/sign-in"}>Sign In</Link>
-            </CardAction>
+            <CardDescription>
+              Enter your email below to login to your account
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -94,7 +96,10 @@ const SingUpPageView = () => {
                         autoComplete="off"
                       />
                       {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="text-red-600"
+                        />
                       )}
                     </Field>
                   )}
@@ -113,7 +118,10 @@ const SingUpPageView = () => {
                         autoComplete="off"
                       />
                       {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="text-red-600"
+                        />
                       )}
                     </Field>
                   )}
@@ -125,7 +133,7 @@ const SingUpPageView = () => {
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel>Password</FieldLabel>
-                      <div className="relative">
+                      <div className="relative items-center">
                         <Input
                           {...field}
                           aria-invalid={fieldState.invalid}
@@ -149,11 +157,13 @@ const SingUpPageView = () => {
                             {showPassword ? "Hide Password" : "Show Password"}
                           </span>
                         </Button>
-
-                        {fieldState.invalid && (
-                          <FieldError errors={[fieldState.error]} />
-                        )}
                       </div>
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="text-red-600"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -164,12 +174,27 @@ const SingUpPageView = () => {
                   </div>
                 )}
                 <Field orientation="horizontal">
-                  <Button type="submit" className="bg-secondary cursor-pointer">
-                    SignIn
-                  </Button>
+                  <LoadingButton
+                    loading={loading}
+                    variant="default"
+                    className="w-full cursor-pointer hover:bg-primary/70 text-white"
+                  >
+                    Create an account
+                  </LoadingButton>
                 </Field>
               </FieldGroup>
             </form>
+            <CardDescription>
+              <span className="flex items-center  justify-center w-full text-sm gap-1 pt-3">
+                Have an acount?
+                <Link
+                  href={"/sign-in"}
+                  className="hover:underline text-blue-700 "
+                >
+                  Sign In
+                </Link>
+              </span>
+            </CardDescription>
           </CardContent>
         </Card>
       </div>

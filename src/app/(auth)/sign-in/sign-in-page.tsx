@@ -25,6 +25,7 @@ import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { LoadingButton } from "@/components/LoadingButton";
 
 const signinSchema = z.object({
   email: z.email({ message: "Email tidak valid" }),
@@ -67,15 +68,12 @@ const SingIpPageView = () => {
   }
 
   return (
-    <section className="w-screen h-screen">
+    <section className="w-screen h-screen bg-gray-200">
       <div className="flex items-center justify-center w-full h-full">
-        <Card className="bg-gray-300 w-1/4">
+        <Card className="bg-gray-200 w-1/4">
           <CardHeader>
             <CardTitle>SignUp Acount</CardTitle>
             <CardDescription>Enter Your Email and Password</CardDescription>
-            <CardAction>
-              <Link href={"/sign-up"}>Sign Up</Link>
-            </CardAction>
           </CardHeader>
           <CardContent>
             <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -94,7 +92,10 @@ const SingIpPageView = () => {
                         autoComplete="off"
                       />
                       {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="text-red-600"
+                        />
                       )}
                     </Field>
                   )}
@@ -130,11 +131,13 @@ const SingIpPageView = () => {
                             {showPassword ? "Hide Password" : "Show Password"}
                           </span>
                         </Button>
-
-                        {fieldState.invalid && (
-                          <FieldError errors={[fieldState.error]} />
-                        )}
                       </div>
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="text-red-600"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -145,12 +148,28 @@ const SingIpPageView = () => {
                   </div>
                 )}
                 <Field orientation="horizontal">
-                  <Button type="submit" className="bg-secondary cursor-pointer">
+                  <LoadingButton
+                    type="submit"
+                    variant="default"
+                    className=" cursor-pointer hover:bg-primary/70 w-full text-white"
+                    loading={loading}
+                  >
                     Sign In
-                  </Button>
+                  </LoadingButton>
                 </Field>
               </FieldGroup>
             </form>
+            <CardDescription>
+              <span className="flex items-center justify-center gap-1 pt-3">
+                You don't hane an account?
+                <Link
+                  href={"/sign-up"}
+                  className="hover:underlin text-blue-600 "
+                >
+                  Sign Up
+                </Link>
+              </span>
+            </CardDescription>
           </CardContent>
         </Card>
       </div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Exo_2, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
+import Navbar from "@/components/ui/fragment/Navbar";
 
 const exo2 = Exo_2({
   variable: "--font-exo2",
@@ -29,10 +30,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="id">
       <body className={`${exo2.className} ${geistMono.variable} antialiased`}>
         {children}
-        <Toaster />
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );

@@ -11,6 +11,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+
 }
 
 model User {
@@ -19,10 +20,13 @@ model User {
   email         String
   emailVerified Boolean
   image         String?
+  role          String?    @default("user")
   createdAt     DateTime
   updatedAt     DateTime
   sessions      Session[]
   accounts      Account[]
+  post          Post[]
+  media         Media[]
 
   @@unique([email])
   @@map("user")
@@ -38,6 +42,7 @@ model Session {
   userAgent String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
 
   @@unique([token])
   @@map("session")
@@ -71,4 +76,56 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+}
+
+model Post {
+  id              String    @id  @default(cuid())
+  title           String
+  slug            String    @unique
+  excerpt         String?
+  content         String    @db.Text
+  thumbnail       String?
+  status          String
+  publishedAt     DateTime?  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  author          User      @relation(fields: [authorId], references: [id])
+  authorId        String
+
+  category        Category? @relation(fields: [categoryId], references: [id])
+  categoryId      String?
+
+  @@map("post")
+}
+
+model Media {
+  id            String @id @default(cuid())
+  title         String
+  description   String
+  filename      String
+  url           String
+  publicId      String   @unique
+  format        String
+  width         Int?
+  height        Int?
+  size          Int?
+  createdAt     DateTime @default(now())
+
+  uploadedBy    User      @relation(fields: [uploadedById], references: [id] )
+  uploadedById  String
+
+  @@map("media")
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  post        Post[]
+
+  @@map("category")
 }

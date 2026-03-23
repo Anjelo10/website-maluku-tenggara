@@ -1,11 +1,8 @@
 "use client";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import AnimatedContent from "../../AnimatedContent";
-import { Button } from "../button";
-import { authClient } from "@/lib/auth-client";
-import { toast } from "sonner";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -41,28 +38,16 @@ const Navbar = () => {
       path: "#service",
     },
   ];
-
-  const router = useRouter();
-  async function handleSignOut() {
-    const { error } = await authClient.signOut();
-    if (error) {
-      toast.error(error.message || "Terjadi kesalahan");
-    } else {
-      toast.success("Berhasil keluar");
-      router.push("/sign-in");
-    }
-  }
-
   return (
-    <nav>
+    <nav className="">
       <div
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-3 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 ${
           isScrolled
-            ? "bg-white/10 backdrop-blur-lg shadow-elegant border border-white/10 "
+            ? "bg-white/10 backdrop-blur-lg shadow-elegant border-b border-white"
             : "bg-transparent"
         }`}
       >
-        <div className="container-x flex justify-between text-white items-center">
+        <div className="container-x flex justify-between text-white">
           <AnimatedContent
             distance={100}
             direction="vertical"
@@ -82,9 +67,8 @@ const Navbar = () => {
               console.log("onDisappearanceComplete");
             }}
           >
-            <h1 className="text-white text-xl font-bold leading-none">
-              Maluku <br />
-              Tenggara
+            <h1 className="text-white font-bold text-2xl drop-shadow-lg">
+              Maluku Tenggara
             </h1>
           </AnimatedContent>
 
@@ -112,7 +96,7 @@ const Navbar = () => {
               {NavItems.map((item) => (
                 <div
                   key={item.name}
-                  className="space-x-10 hover:font-bold hover:scale-x105 transition-all text-shadow-lg"
+                  className="space-x-10 hover:font-bold hover:scale-x105 transition-all font-semibold"
                 >
                   <Link href={item.path} key={item.name}>
                     {item.name}
@@ -120,15 +104,7 @@ const Navbar = () => {
                 </div>
               ))}
             </div>
-            <div>
-              <Button
-                onClick={handleSignOut}
-                variant="default"
-                className="cursor-pointer bg-secondary"
-              >
-                Sign Out
-              </Button>
-            </div>
+            <div></div>
           </AnimatedContent>
         </div>
       </div>

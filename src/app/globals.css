@@ -1,21 +1,117 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "react-quill-new/dist/quill.snow.css";
+
+html {
+  overflow-x: clip;
+}
+
+.ql-container {
+  min-height: 300px;
+  font-size: 15px;
+}
+
+.ql-editor.prose,
+.ql-editor.prose * {
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important; /* Menjaga spasi dan enter tetap rapi */
+  hyphens: none !important;
+  -webkit-hyphens: none !important;
+}
+
+/* Memperbaiki masalah spasi lebar jika Anda pakai justify */
+.ql-editor.prose {
+  text-align: left; /* Coba ganti ke left dulu untuk memastikan kerapian */
+}
 
 body {
-  background-color: #4d0002;
+  background-color: #ffffff;
 }
 
 @theme {
   --color-primary: #4d0002;
-  --color-secondary: #e2852e;
+  --color-secondary: #c9a227;
   --color-tertiary: #c0c0c0;
   --color-quaternary: #e0e0e0;
   --color-quinary: #f0f0f0;
+
+  --shadow-soft-bold:
+    0 20px 25px 5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+  /* Shadow Modern yang 'Deep' (Lebih dalam/gelap di bagian tengah) */
+  --shadow-deep-soft: 0 5px 15px 5px rgba(0, 0, 0, 0.12);
+
+  /* Shadow Berwarna (Agar terlihat lebih hidup/vibrant) */
+  --shadow-colored-soft: 0 20px 25px -5px rgba(59, 130, 246, 0.15);
+
+  /* Shadow Berlapis (Smooth Shadow Technique) */
+  --shadow-layered:
+    0 1px 2px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.07),
+    0 4px 8px rgba(0, 0, 0, 0.07), 0 8px 16px rgba(0, 0, 0, 0.07);
 }
 
 @layer base {
   .container-x {
-    @apply mx-3 lg:mx-30;
+    @apply w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 max-w-7xl;
   }
+}
+@layer base {
+  :root {
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 240 5.9% 10%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  .text-shadow-sm {
+    text-shadow: 1px 1px 2px hsla(0, 0%, 0%, 0.25);
+  }
+  .text-shadow-md {
+    text-shadow: 2px 2px 4px hsla(0, 0%, 0%, 0.3);
+  }
+  .text-shadow-lg {
+    text-shadow: 3px 3px 6px hsla(0, 0%, 0%, 0.4);
+  }
+
+  .text-shadow-primary {
+    text-shadow: 0px 0px 2px hsl(var(--color-primary));
+  }
+}
+
+.embla__viewport {
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+  touch-action: pan-y pinch-zoom;
+}
+
+.embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+.embla__slide img {
+  width: 100%;
 }
