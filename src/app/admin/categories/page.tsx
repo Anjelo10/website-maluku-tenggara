@@ -7,7 +7,7 @@ const CategoriesPage = async () => {
   return (
     <div>
       <div>
-        <h1>Kategori</h1>
+        <h1 className="text-2xl font-semibold">Kategori</h1>
         <p>Kelola kategori berita</p>
       </div>
       <CategoryList initialCategories={categories} />

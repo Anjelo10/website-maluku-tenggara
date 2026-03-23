@@ -148,7 +148,7 @@ const MediaGallery = ({ initialData }: { initialData: MediaData }) => {
         <Button
           onClick={() => inputRef.current?.click()}
           disabled={isPending}
-          className="gap-2"
+          className="gap-2 translate-y-1.5 hover:border-black hover:bg-white hover:text-primary transition-colors"
         >
           <Upload className="w-4 h-4" />
           Upload Foto
@@ -195,7 +195,7 @@ const MediaGallery = ({ initialData }: { initialData: MediaData }) => {
                     <Button
                       size="sm"
                       variant="secondary"
-                      className="flex-1 h-7 text-xs gap-1"
+                      className="flex-1 h-7 text-xs gap-1 cursor-pointer text-white hover:bg-white hover:text-yellow-600 transition-colors"
                       onClick={() => setEditTarget(item)}
                     >
                       <Pencil className="w-3 h-3" />
@@ -204,7 +204,7 @@ const MediaGallery = ({ initialData }: { initialData: MediaData }) => {
                     <Button
                       size="sm"
                       variant="destructive"
-                      className="h-7 w-7 p-0"
+                      className="h-7 w-7 p-0 bg-white text-red-600 cursor-pointer hover:bg-red-600 hover:text-white transition-colors"
                       onClick={() => setDeleteTarget(item)}
                     >
                       <Trash2 className="w-3 h-3" />
@@ -254,6 +254,7 @@ const MediaGallery = ({ initialData }: { initialData: MediaData }) => {
                 name="description"
                 placeholder="Deskripsi foto yang akan muncul di popup..."
                 rows={3}
+                className="resize-y break-all w-full"
               />
             </div>
             <DialogFooter>

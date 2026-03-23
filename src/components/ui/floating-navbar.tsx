@@ -8,6 +8,20 @@ import {
 } from "motion/react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { authClient, useSession } from "@/lib/auth-client";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./dropdown-menu";
+import { Button } from "./button";
+import { LayoutDashboard, User, UserRoundPen } from "lucide-react";
+import Link from "next/link";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export const FloatingNav = ({
   navItems,
@@ -22,6 +36,8 @@ export const FloatingNav = ({
 }) => {
   const { scrollYProgress } = useScroll();
   const [visible, setVisible] = useState(true);
+  const { data } = useSession();
+  const router = useRouter();
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
     if (typeof current === "number") {
@@ -38,6 +54,16 @@ export const FloatingNav = ({
       }
     }
   });
+
+  async function handleSignOut() {
+    const { error } = await authClient.signOut();
+    if (error) {
+      toast.error(error.message || "Terjadi kesalahan");
+    } else {
+      toast.success("Berhasil keluar");
+      router.refresh();
+    }
+  }
 
   return (
     <AnimatePresence mode="wait">
@@ -89,9 +115,57 @@ export const FloatingNav = ({
           {/* <div className="h-5 w-px bg-neutral-200 dark:bg-white/10" /> */}
 
           {/* CTA Button */}
-          <button className="relative rounded-full bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-neutral-800 hover:shadow-lg hover:shadow-neutral-900/20 dark:bg-white dark:text-black dark:hover:bg-neutral-100 dark:hover:shadow-white/20">
-            <span>Login</span>
-          </button>
+          <div className="relative">
+            {data ? (
+              <DropdownMenu modal={false}>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="secondary" className="cursor-pointer">
+                    <UserRoundPen className="w-4 h-4" />
+                    hi! {data?.user.name}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  asChild
+                  className="w-4 z-5000 border-none absolute left-0"
+                  align="start"
+                >
+                  <DropdownMenuGroup className="bg-white border-none ring-secondary ">
+                    <DropdownMenuItem className="hover:bg-gray-300">
+                      {data.user.role === "admin" ? (
+                        <Link
+                          href="/dashboar"
+                          className="flex gap-2 text-primary items-center font-semibold"
+                        >
+                          <LayoutDashboard />
+                          Dashboard
+                        </Link>
+                      ) : (
+                        <div />
+                      )}
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator className="bg-gray-400" />
+                    <DropdownMenuItem>
+                      <Button
+                        className="bg-primary w-full text-white"
+                        onClick={handleSignOut}
+                      >
+                        Sign Out
+                      </Button>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              // <div className="bg-secondary p-1.5 rounded-full flex items-center justify-center">
+              //   <User className="w-6 h-6 text-primary rounded-sm text-center" />
+              // </div>
+              <Link href="sign-in">
+                <Button variant="secondary" className="cursor-pointer">
+                  Sign In
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
       </motion.div>
     </AnimatePresence>
